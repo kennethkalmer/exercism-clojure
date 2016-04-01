@@ -1,16 +1,14 @@
 (ns rna-transcription
   (:require [clojure.string :as s]))
 
-(def dna-rna-pairs {"G" "C"
-                    "C" "G"
-                    "T" "A"
-                    "A" "U"})
+(def dna->rna {\G \C
+               \C \G
+               \T \A
+               \A \U})
 
 (defn get-pair [n]
-  (let [match (dna-rna-pairs (str n))]
-    (when (nil? match)
-      (throw (AssertionError. (str "Invalid nucleotide " n))))
-    match))
+  (assert (contains? dna->rna n))
+  (dna->rna n))
 
 (defn to-rna [strand]
-  (s/join "" (map get-pair strand)))
+  (s/join (map get-pair strand)))
